@@ -1,55 +1,30 @@
 // TODO:
 // * prevent snack from spawning in snake tail
-// * show scoreboard - IN PROGRESS...
-//   * fix blurried text rendering - DONE!
-//   * display score
-//   * display title
+//
+// * show scoreboard - DONE!
+//   * fix blurried text rendering - DONE
+//   * display score - DONE
+//   * display title - DONE
+//
 // * collision against walls - DONE!
-// * failstate - game over
+//
+// * failstate - game over - DONE!
 //   * centered modal - DONE
 //   * stop game loop - DONE
 //   * reinitialize game loop - DONE
 //   * reset board - DONE
+//
 // * truncate snake path (we don't need that much)
-
-
-var PIXEL_RATIO = (function () {
-  var ctx = document.createElement("canvas").getContext("2d"),
-    dpr = window.devicePixelRatio || 1,
-    bsr = ctx.webkitBackingStorePixelRatio ||
-    ctx.mozBackingStorePixelRatio ||
-    ctx.msBackingStorePixelRatio ||
-    ctx.oBackingStorePixelRatio ||
-    ctx.backingStorePixelRatio || 1;
-
-  return dpr / bsr;
-})();
-
-
-createHiDPICanvas = function(w, h, ratio) {
-  if (!ratio) { ratio = PIXEL_RATIO; }
-  var can = document.createElement("canvas");
-  can.width = w * ratio;
-  can.height = h * ratio;
-  can.style.width = w + "px";
-  can.style.height = h + "px";
-  can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-  return can;
-}
-
+//
+// * Store fonts locally
+//
+// * Seperate into different files
 
 window.onload = function() {
-
-  var boardCanvas = document.getElementById("BoardCanvas");
-  var boardCtx = boardCanvas.getContext("2d");
-
-  scoreCanvas = createHiDPICanvas(500, 50);
-  var scoreCtx = scoreCanvas.getContext("2d");
-
-  document.getElementById('scoreCanvas').appendChild(scoreCanvas);
-
   var VELOCITY = 2;
   var PIXELS = 10;
+  var WIDTH = 500;
+  var HEIGHT = 500;
   var BOARDBGCOLOR = '#81942b';
   var GRIDCOLOR = '#a8c334';
   var SNAKECOLOR = '#ec1f5e';
@@ -57,6 +32,15 @@ window.onload = function() {
   var animFrameId;
   var gameOver = false;
   var score = 0;
+
+  var boardCanvas = createHiDPICanvas(WIDTH, HEIGHT);
+  var boardCtx = boardCanvas.getContext("2d");
+
+  scoreCanvas = createHiDPICanvas(WIDTH, 50);
+  var scoreCtx = scoreCanvas.getContext("2d");
+
+  document.getElementById('scoreCanvas').appendChild(scoreCanvas);
+  document.getElementById('boardCanvas').appendChild(boardCanvas);
 
   function drawScoreboard() {
     var titleText = 'flinc-Snake';
@@ -67,7 +51,7 @@ window.onload = function() {
 
     scoreCtx.font = '10px "Press Start 2P"';
     scoreCtx.beginPath();
-    scoreCtx.rect(0, 0, 500, 50);
+    scoreCtx.rect(0, 0, WIDTH, 50);
     scoreCtx.fillStyle = BOARDBGCOLOR ;
     scoreCtx.fill();
     scoreCtx.closePath();
@@ -77,9 +61,9 @@ window.onload = function() {
       scoreCtx.fillText(scoreText, 0, 30);
 
       scoreCtx.font = '14px "Press Start 2P"';
-      scoreCtx.fillText(gameOverTitle, 500/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
+      scoreCtx.fillText(gameOverTitle, WIDTH/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
       scoreCtx.font = '10px "Press Start 2P"';
-      scoreCtx.fillText(gameOverSubTitle, 500/2 - scoreCtx.measureText(gameOverSubTitle).width/2, 40);
+      scoreCtx.fillText(gameOverSubTitle, WIDTH/2 - scoreCtx.measureText(gameOverSubTitle).width/2, 40);
 
       return;
     }
@@ -88,13 +72,7 @@ window.onload = function() {
     scoreCtx.fillText(scoreText, 0, 30);
 
     scoreCtx.font = '14px "Press Start 2P"';
-    scoreCtx.fillText(titleText, 500/2 - scoreCtx.measureText(titleText).width/2, 35);
-  }
-
-  drawScoreboard();
-
-  function rand(n) {
-    return Math.floor(Math.random() *n +1);
+    scoreCtx.fillText(titleText, WIDTH/2 - scoreCtx.measureText(titleText).width/2, 35);
   }
 
   var Snake = function(x, y) {
@@ -215,8 +193,8 @@ window.onload = function() {
   };
 
   var Board = function() {
-    this.columns = 500;
-    this.rows = 500;
+    this.columns = WIDTH;
+    this.rows = HEIGHT;
     this.snack = null;
   };
 

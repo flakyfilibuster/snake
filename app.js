@@ -42,39 +42,6 @@ window.onload = function() {
   document.getElementById('scoreCanvas').appendChild(scoreCanvas);
   document.getElementById('boardCanvas').appendChild(boardCanvas);
 
-  function drawScoreboard() {
-    var titleText = 'flinc-Snake';
-    var scoreText = 'score:' + score;
-
-    var gameOverTitle = "Game Over"
-    var gameOverSubTitle = 'Press SPACE to try again';
-
-    scoreCtx.font = '10px "Press Start 2P"';
-    scoreCtx.beginPath();
-    scoreCtx.rect(0, 0, WIDTH, 50);
-    scoreCtx.fillStyle = BOARDBGCOLOR ;
-    scoreCtx.fill();
-    scoreCtx.closePath();
-
-    if (gameOver) {
-      scoreCtx.fillStyle = '#232027';
-      scoreCtx.fillText(scoreText, 0, 30);
-
-      scoreCtx.font = '14px "Press Start 2P"';
-      scoreCtx.fillText(gameOverTitle, WIDTH/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
-      scoreCtx.font = '10px "Press Start 2P"';
-      scoreCtx.fillText(gameOverSubTitle, WIDTH/2 - scoreCtx.measureText(gameOverSubTitle).width/2, 40);
-
-      return;
-    }
-
-    scoreCtx.fillStyle = '#232027';
-    scoreCtx.fillText(scoreText, 0, 30);
-
-    scoreCtx.font = '14px "Press Start 2P"';
-    scoreCtx.fillText(titleText, WIDTH/2 - scoreCtx.measureText(titleText).width/2, 35);
-  }
-
   var Snake = function(x, y) {
     this.x = x;
     this.y = y;
@@ -188,7 +155,7 @@ window.onload = function() {
       snake.tail++;
       snake.children.push(new Snake(0, 0));
       score++;
-      drawScoreboard();
+      board.drawScoreboard();
     }
   };
 
@@ -230,10 +197,43 @@ window.onload = function() {
     }
   }
 
+  Board.prototype.drawScoreboard = function() {
+    var titleText = 'flinc-Snake';
+    var scoreText = 'score:' + score;
+
+    var gameOverTitle = "Game Over"
+    var gameOverSubTitle = 'Press SPACE to try again';
+
+    scoreCtx.font = '10px "Press Start 2P"';
+    scoreCtx.beginPath();
+    scoreCtx.rect(0, 0, WIDTH, 50);
+    scoreCtx.fillStyle = BOARDBGCOLOR ;
+    scoreCtx.fill();
+    scoreCtx.closePath();
+
+    if (gameOver) {
+      scoreCtx.fillStyle = '#232027';
+      scoreCtx.fillText(scoreText, 0, 30);
+
+      scoreCtx.font = '14px "Press Start 2P"';
+      scoreCtx.fillText(gameOverTitle, WIDTH/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
+      scoreCtx.font = '10px "Press Start 2P"';
+      scoreCtx.fillText(gameOverSubTitle, WIDTH/2 - scoreCtx.measureText(gameOverSubTitle).width/2, 40);
+
+      return;
+    }
+
+    scoreCtx.fillStyle = '#232027';
+    scoreCtx.fillText(scoreText, 0, 30);
+
+    scoreCtx.font = '14px "Press Start 2P"';
+    scoreCtx.fillText(titleText, WIDTH/2 - scoreCtx.measureText(titleText).width/2, 35);
+  }
+
   Board.prototype.gameOver = function() {
     gameOver = true;
 
-    drawScoreboard();
+    this.drawScoreboard();
   }
 
   var Game = function() {
@@ -242,8 +242,8 @@ window.onload = function() {
       this.board = new Board();
       score = 0;
       this.board.addSnack();
+      this.board.drawScoreboard();
       this.addListeners();
-      drawScoreboard();
       this.draw();
     }
 

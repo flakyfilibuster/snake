@@ -10,20 +10,20 @@
 window.onload = function() {
   var VELOCITY = 2;
   var PIXELS = 10;
-  var WIDTH = 500;
-  var HEIGHT = 500;
+  var GAMEBOARDWIDTH = 500;
+  var GAMEBOARDHEIGHT = 500;
+  var SCOREBOARDHEIGHT = 50;
   var BOARDBGCOLOR = '#81942b';
   var GRIDCOLOR = '#a8c334';
   var SNAKECOLOR = '#ec1f5e';
   var SNACKCOLOR = '#4591d8';
-  var animFrameId;
   var gameOver = false;
   var score = 0;
 
-  var boardCanvas = createHiDPICanvas(WIDTH, HEIGHT);
+  var boardCanvas = createHiDPICanvas(GAMEBOARDWIDTH, GAMEBOARDHEIGHT);
   var boardCtx = boardCanvas.getContext("2d");
 
-  scoreCanvas = createHiDPICanvas(WIDTH, 50);
+  scoreCanvas = createHiDPICanvas(GAMEBOARDWIDTH, SCOREBOARDHEIGHT);
   var scoreCtx = scoreCanvas.getContext("2d");
 
   document.getElementById('scoreCanvas').appendChild(scoreCanvas);
@@ -147,8 +147,8 @@ window.onload = function() {
   };
 
   var Board = function() {
-    this.columns = WIDTH;
-    this.rows = HEIGHT;
+    this.columns = GAMEBOARDWIDTH;
+    this.rows = GAMEBOARDHEIGHT;
     this.snack = null;
   };
 
@@ -193,7 +193,7 @@ window.onload = function() {
 
     scoreCtx.font = '10px "Press Start 2P"';
     scoreCtx.beginPath();
-    scoreCtx.rect(0, 0, WIDTH, 50);
+    scoreCtx.rect(0, 0, GAMEBOARDWIDTH, 50);
     scoreCtx.fillStyle = BOARDBGCOLOR ;
     scoreCtx.fill();
     scoreCtx.closePath();
@@ -203,9 +203,9 @@ window.onload = function() {
       scoreCtx.fillText(scoreText, 0, 30);
 
       scoreCtx.font = '14px "Press Start 2P"';
-      scoreCtx.fillText(gameOverTitle, WIDTH/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
+      scoreCtx.fillText(gameOverTitle, GAMEBOARDWIDTH/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
       scoreCtx.font = '10px "Press Start 2P"';
-      scoreCtx.fillText(gameOverSubTitle, WIDTH/2 - scoreCtx.measureText(gameOverSubTitle).width/2, 40);
+      scoreCtx.fillText(gameOverSubTitle, GAMEBOARDWIDTH/2 - scoreCtx.measureText(gameOverSubTitle).width/2, 40);
 
       return;
     }
@@ -214,7 +214,7 @@ window.onload = function() {
     scoreCtx.fillText(scoreText, 0, 30);
 
     scoreCtx.font = '14px "Press Start 2P"';
-    scoreCtx.fillText(titleText, WIDTH/2 - scoreCtx.measureText(titleText).width/2, 35);
+    scoreCtx.fillText(titleText, GAMEBOARDWIDTH/2 - scoreCtx.measureText(titleText).width/2, 35);
   }
 
   Board.prototype.gameOver = function() {

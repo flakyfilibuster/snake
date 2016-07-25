@@ -23,7 +23,7 @@ window.onload = function() {
   var boardCanvas = createHiDPICanvas(GAMEBOARDWIDTH, GAMEBOARDHEIGHT);
   var boardCtx = boardCanvas.getContext("2d");
 
-  scoreCanvas = createHiDPICanvas(GAMEBOARDWIDTH, SCOREBOARDHEIGHT);
+  var scoreCanvas = createHiDPICanvas(GAMEBOARDWIDTH, SCOREBOARDHEIGHT);
   var scoreCtx = scoreCanvas.getContext("2d");
 
   document.getElementById('scoreCanvas').appendChild(scoreCanvas);
@@ -40,6 +40,10 @@ window.onload = function() {
     this.direction = null;
   };
 
+  Snake.prototype.childPosition = function(index) {
+    return this.path[this.path.length -7 -index * 6];
+  }
+
   Snake.prototype.draw = function() {
     this.path.push(Object.assign({}, {x: this.x, y: this.y}));
 
@@ -51,7 +55,7 @@ window.onload = function() {
 
     this.children.forEach(function(child, i) {
       boardCtx.fillStyle = SNAKECOLOR ;
-      var pos = this.path[this.path.length -7 -i*6];
+      var pos = this.childPosition(i);
       child.x = pos.x;
       child.y = pos.y
       boardCtx.beginPath();

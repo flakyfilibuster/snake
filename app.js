@@ -1,19 +1,6 @@
 // TODO:
 // * prevent snack from spawning in snake tail
 //
-// * show scoreboard - DONE!
-//   * fix blurried text rendering - DONE
-//   * display score - DONE
-//   * display title - DONE
-//
-// * collision against walls - DONE!
-//
-// * failstate - game over - DONE!
-//   * centered modal - DONE
-//   * stop game loop - DONE
-//   * reinitialize game loop - DONE
-//   * reset board - DONE
-//
 // * truncate snake path (we don't need that much)
 //
 // * Store fonts locally

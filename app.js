@@ -13,10 +13,10 @@ window.onload = function() {
   var GAMEBOARDWIDTH = 500;
   var GAMEBOARDHEIGHT = 500;
   var SCOREBOARDHEIGHT = 50;
-  var BOARDBGCOLOR = '#81942b';
-  var GRIDCOLOR = '#a8c334';
-  var SNAKECOLOR = '#ec1f5e';
-  var SNACKCOLOR = '#4591d8';
+  var BOARDBGCOLOR = '#313b3d';
+  var GRIDCOLOR = '#ffffff';
+  var SNAKECOLOR = '#33b2ce';
+  var SNACKCOLOR = '#ffffff';
   var gameOver = false;
   var score = 0;
 
@@ -189,7 +189,6 @@ window.onload = function() {
   }
 
   Board.prototype.drawScoreboard = function() {
-    var titleText = 'flinc-Snake';
     var scoreText = 'score:' + score;
 
     var gameOverTitle = "Game Over"
@@ -204,7 +203,6 @@ window.onload = function() {
 
     if (gameOver) {
       scoreCtx.fillStyle = '#232027';
-      scoreCtx.fillText(scoreText, 0, 30);
 
       scoreCtx.font = '14px "Press Start 2P"';
       scoreCtx.fillText(gameOverTitle, GAMEBOARDWIDTH/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
@@ -215,10 +213,9 @@ window.onload = function() {
     }
 
     scoreCtx.fillStyle = '#232027';
-    scoreCtx.fillText(scoreText, 0, 30);
 
     scoreCtx.font = '14px "Press Start 2P"';
-    scoreCtx.fillText(titleText, GAMEBOARDWIDTH/2 - scoreCtx.measureText(titleText).width/2, 35);
+    scoreCtx.fillText(scoreText, GAMEBOARDWIDTH/2 - scoreCtx.measureText(scoreText).width/2, 35);
   }
 
   Board.prototype.gameOver = function() {

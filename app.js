@@ -67,10 +67,12 @@ window.onload = function() {
   }
 
   Snake.prototype.collides = function(board) {
+    // board boundaries
     if (this.x < 0 || this.x > board.columns - PIXELS || this.y < 0 || this.y > board.rows - PIXELS) {
       board.gameOver();
     }
 
+    // own tail
     this.children.forEach(function(child, idx) {
       if (idx > 1) {
         if (this.x > child.x && this.x < (child.x + PIXELS) && this.y > child.y && this.y < (child.y + PIXELS)) {
@@ -280,9 +282,6 @@ window.onload = function() {
   }
 
 
-
-
   var game = new Game();
   game.setUp();
-
 }

@@ -40,6 +40,7 @@ window.onload = function() {
     this.direction = null;
   };
 
+  // Replace magic numbers...
   Snake.prototype.childPosition = function(index) {
     return this.path[this.path.length -7 -index * 6];
   }

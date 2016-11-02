@@ -46,7 +46,7 @@ window.onload = function() {
   }
 
   Snake.prototype.draw = function() {
-    this.path.push(Object.assign({}, {x: this.x, y: this.y}));
+    this.path.push({x: this.x, y: this.y});
 
     boardCtx.beginPath();
     boardCtx.rect(this.x, this.y, PIXELS, PIXELS);

@@ -258,7 +258,7 @@ window.onload = function() {
     }.bind(this);
 
     this.addListeners = function() {
-      keyDownHandler = function(e) {
+      var keyDownHandler = function(e) {
         if (gameOver) {
           if (e.keyCode == 32) {
             gameOver = false;

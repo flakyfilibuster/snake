@@ -18,6 +18,7 @@ window.onload = function() {
   var SNAKECOLOR = '#33b2ce';
   var SNACKCOLOR = '#ffffff';
   var gameOver = false;
+  var started = false;
   var score = 0;
 
   var boardCanvas = createHiDPICanvas(GAMEBOARDWIDTH, GAMEBOARDHEIGHT);
@@ -192,9 +193,9 @@ window.onload = function() {
   }
 
   Board.prototype.drawScoreboard = function() {
-    var scoreText = 'score:' + score;
+    var scoreText = 'SCORE:' + score;
 
-    var gameOverTitle = "Game Over"
+    var gameOverTitle = "Congrats, you had a score of: " + score;
     var gameOverSubTitle = 'Press SPACE to try again';
 
     scoreCtx.font = '10px "Press Start 2P"';
@@ -217,8 +218,15 @@ window.onload = function() {
 
     scoreCtx.fillStyle = '#232027';
 
-    scoreCtx.font = '14px "Press Start 2P"';
-    scoreCtx.fillText(scoreText, GAMEBOARDWIDTH/2 - scoreCtx.measureText(scoreText).width/2, 35);
+    if (started) {
+      scoreCtx.font = '14px "Press Start 2P"';
+      scoreCtx.fillText(scoreText, GAMEBOARDWIDTH/2 - scoreCtx.measureText(scoreText).width/2, 35);
+    } else {
+      scoreCtx.font = '14px "Press Start 2P"';
+      scoreCtx.fillText("Welcome!", GAMEBOARDWIDTH/2 - scoreCtx.measureText("Welcome!").width/2, 25);
+      scoreCtx.font = '10px "Press Start 2P"';
+      scoreCtx.fillText("Press any directions key to start.", GAMEBOARDWIDTH/2 - scoreCtx.measureText("Press any directions key to start.").width/2, 40);
+    }
   }
 
   Board.prototype.gameOver = function() {
@@ -264,6 +272,11 @@ window.onload = function() {
             gameOver = false;
             this.setUp();
           }
+        }
+
+        if (!started && (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40 )) {
+          started = true;
+          this.board.drawScoreboard();
         }
 
         if (e.keyCode == 38) {

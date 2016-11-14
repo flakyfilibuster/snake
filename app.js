@@ -198,7 +198,7 @@ window.onload = function() {
     var gameOverTitle = "Congrats, you had a score of: " + score;
     var gameOverSubTitle = 'Press SPACE to try again';
 
-    scoreCtx.font = '10px "Press Start 2P"';
+    scoreCtx.font = '10px "press_start_2pregular"';
     scoreCtx.beginPath();
     scoreCtx.rect(0, 0, GAMEBOARDWIDTH, 50);
     scoreCtx.fillStyle = BOARDBGCOLOR ;
@@ -208,9 +208,9 @@ window.onload = function() {
     if (gameOver) {
       scoreCtx.fillStyle = '#232027';
 
-      scoreCtx.font = '14px "Press Start 2P"';
+      scoreCtx.font = '14px "press_start_2pregular"';
       scoreCtx.fillText(gameOverTitle, GAMEBOARDWIDTH/2 - scoreCtx.measureText(gameOverTitle).width/2, 25);
-      scoreCtx.font = '10px "Press Start 2P"';
+      scoreCtx.font = '10px "press_start_2pregular"';
       scoreCtx.fillText(gameOverSubTitle, GAMEBOARDWIDTH/2 - scoreCtx.measureText(gameOverSubTitle).width/2, 40);
 
       return;
@@ -219,12 +219,12 @@ window.onload = function() {
     scoreCtx.fillStyle = '#232027';
 
     if (started) {
-      scoreCtx.font = '14px "Press Start 2P"';
+      scoreCtx.font = '14px "press_start_2pregular"';
       scoreCtx.fillText(scoreText, GAMEBOARDWIDTH/2 - scoreCtx.measureText(scoreText).width/2, 35);
     } else {
-      scoreCtx.font = '14px "Press Start 2P"';
+      scoreCtx.font = '14px "press_start_2pregular"';
       scoreCtx.fillText("Welcome!", GAMEBOARDWIDTH/2 - scoreCtx.measureText("Welcome!").width/2, 25);
-      scoreCtx.font = '10px "Press Start 2P"';
+      scoreCtx.font = '10px "press_start_2pregular"';
       scoreCtx.fillText("Press any directions key to start.", GAMEBOARDWIDTH/2 - scoreCtx.measureText("Press any directions key to start.").width/2, 40);
     }
   }

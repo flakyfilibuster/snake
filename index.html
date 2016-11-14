@@ -2,9 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
     <title>snake</title>
     <style>
+      @font-face {
+        font-family: 'press_start_2pregular';
+        src: url('pressstart2p-regular-webfont.woff2') format('woff2'),
+             url('pressstart2p-regular-webfont.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+
       * {
         padding: 0;
         margin: 0;
@@ -21,13 +28,13 @@
       }
 
       h1.js-font-fix {
-        font-family: 'Press Start 2P';
+        font-family: "press_start_2pregular";
         font-size: 0px;
       }
     </style>
   </head>
   <body >
-    <!--wtf, without this the font won't apply...-->
+    <!--without this the font won't apply...-->
     <!--I guess fix for this bug...-->
     <h1 class="js-font-fix">.</h1>
 

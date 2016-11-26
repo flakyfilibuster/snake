@@ -1,13 +1,8 @@
 // TODO:
 // * prevent snack from spawning in snake tail
-//
-// * truncate snake path (we don't need that much)
-//
-// * Store fonts locally
-//
-// * Seperate into different files
 
 window.onload = function() {
+
   var VELOCITY = 2;
   var PIXELS = 10;
   var GAMEBOARDWIDTH = 500;
@@ -30,127 +25,37 @@ window.onload = function() {
   document.getElementById('scoreCanvas').appendChild(scoreCanvas);
   document.getElementById('boardCanvas').appendChild(boardCanvas);
 
-  var Snake = function(x, y) {
-    this.x = x;
-    this.y = y;
-    this.dx = 0;
-    this.dy = 0;
-    this.path = [];
-    this.tail = 0;
-    this.children = []
-    this.direction = null;
-  };
+  class Snack {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+    }
 
-  // Replace magic numbers...
-  Snake.prototype.childPosition = function(index) {
-    return this.path[this.path.length -7 -index * 6];
-  }
-
-  Snake.prototype.draw = function() {
-    this.path.push({x: this.x, y: this.y});
-
-    boardCtx.beginPath();
-    boardCtx.rect(this.x, this.y, PIXELS, PIXELS);
-    boardCtx.fillStyle = SNAKECOLOR ;
-    boardCtx.fill();
-    boardCtx.closePath();
-
-    this.children.forEach(function(child, i) {
-      boardCtx.fillStyle = SNAKECOLOR ;
-      var pos = this.childPosition(i);
-      child.x = pos.x;
-      child.y = pos.y
+    draw() {
       boardCtx.beginPath();
-      boardCtx.rect(pos.x, pos.y, PIXELS, PIXELS);
+      boardCtx.rect(this.x, this.y, PIXELS, PIXELS);
+      boardCtx.fillStyle = SNACKCOLOR ;
       boardCtx.fill();
       boardCtx.closePath();
-    }, this);
-  }
-
-  Snake.prototype.collides = function(board) {
-    // board boundaries
-    if (this.x < 0 || this.x > board.columns - PIXELS || this.y < 0 || this.y > board.rows - PIXELS) {
-      board.gameOver();
     }
 
-    // own tail
-    this.children.forEach(function(child, idx) {
-      if (idx > 1) {
-        if (this.x > child.x && this.x < (child.x + PIXELS) && this.y > child.y && this.y < (child.y + PIXELS)) {
-          board.gameOver();
-        }
+    nom(snake, board) {
+      if (snake.x == this.x && snake.y == this.y) {
+        board.addSnack();
+        snake.tail++;
+        snake.children.push(
+          new Snake({
+            x: 0,
+            y: 0,
+            boardCtx: boardCtx,
+            pixels: PIXELS,
+            color: SNAKECOLOR,
+            velocity: VELOCITY
+          })
+        );
+        score++;
+        board.drawScoreboard();
       }
-    }, this);
-  }
-
-  Snake.prototype.move = function() {
-    this.x += this.dx;
-    this.y += this.dy;
-  };
-
-  Snake.prototype.processDirection = function(cb) {
-    if (this.x%PIXELS == 0 && this.y%PIXELS == 0) {
-      this.direction = null;
-      cb();
-    }
-  };
-
-  Snake.prototype.up = function() {
-    this.processDirection(function() {
-      if (!this.dy) {
-        this.dx = 0;
-        this.dy = -VELOCITY;
-      }
-    }.bind(this));
-  };
-
-  Snake.prototype.right = function() {
-    this.processDirection(function() {
-      if (this.dx >= 0) {
-        this.dx = VELOCITY;
-        this.dy = 0;
-      }
-    }.bind(this));
-  };
-
-  Snake.prototype.down = function() {
-    this.processDirection(function() {
-      if (this.dy >= 0) {
-        this.dx = 0;
-        this.dy = VELOCITY;
-      }
-    }.bind(this));
-  };
-
-  Snake.prototype.left = function() {
-    this.processDirection(function() {
-      if (!this.dx) {
-        this.dx = -VELOCITY;
-        this.dy = 0;
-      }
-    }.bind(this));
-  };
-
-  var Snack = function(x, y) {
-    this.x = x;
-    this.y = y;
-  };
-
-  Snack.prototype.draw = function() {
-    boardCtx.beginPath();
-    boardCtx.rect(this.x, this.y, PIXELS, PIXELS);
-    boardCtx.fillStyle = SNACKCOLOR ;
-    boardCtx.fill();
-    boardCtx.closePath();
-  };
-
-  Snack.prototype.nom = function(snake, board) {
-    if (snake.x == this.x && snake.y == this.y) {
-      board.addSnack();
-      snake.tail++;
-      snake.children.push(new Snake(0, 0));
-      score++;
-      board.drawScoreboard();
     }
   };
 
@@ -237,8 +142,16 @@ window.onload = function() {
 
   var Game = function() {
     this.setUp = function() {
-      this.snake = new Snake(250, 250);
+      this.snake = new Snake({
+        x: 250,
+        y: 250,
+        boardCtx: boardCtx,
+        pixels: PIXELS,
+        color: SNAKECOLOR,
+        velocity: VELOCITY
+      });
       this.board = new Board();
+      this.board.snake = this.snake;
       score = 0;
       this.board.addSnack();
       this.board.drawScoreboard();
@@ -255,7 +168,7 @@ window.onload = function() {
 
       this.board.draw();
       this.board.snack.draw();
-      this.snake.draw();
+      this.snake.draw(boardCtx, PIXELS);
 
       this.snake.move();
 

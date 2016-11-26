@@ -25,3 +25,9 @@ function rand(n) {
   return Math.floor(Math.random() *n +1);
 }
 
+function assignConfig(cfg, ctx) {
+  Object.keys(cfg).forEach(function(key) {
+    ctx[key] = cfg[key];
+  });
+}
+

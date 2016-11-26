@@ -1,8 +1,6 @@
 var Snake = class {
   constructor(cfg) {
-    Object.keys(cfg).forEach(function(key) {
-      this[key] = cfg[key];
-    }, this);
+    assignConfig(cfg, this);
 
     this.dx = 0;
     this.dy = 0;

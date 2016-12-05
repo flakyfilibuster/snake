@@ -11,7 +11,6 @@ window.onload = function() {
   var BOARDBGCOLOR = '#313b3d';
   var GRIDCOLOR = '#ffffff';
   var SNAKECOLOR = '#33b2ce';
-  var SNACKCOLOR = '#ffffff';
   var gameOver = false;
   var started = false;
   var score = 0;
@@ -25,39 +24,6 @@ window.onload = function() {
   document.getElementById('scoreCanvas').appendChild(scoreCanvas);
   document.getElementById('boardCanvas').appendChild(boardCanvas);
 
-  class Snack {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-
-    draw() {
-      boardCtx.beginPath();
-      boardCtx.rect(this.x, this.y, PIXELS, PIXELS);
-      boardCtx.fillStyle = SNACKCOLOR ;
-      boardCtx.fill();
-      boardCtx.closePath();
-    }
-
-    nom(snake, board) {
-      if (snake.x == this.x && snake.y == this.y) {
-        board.addSnack();
-        snake.tail++;
-        snake.children.push(
-          new Snake({
-            x: 0,
-            y: 0,
-            boardCtx: boardCtx,
-            pixels: PIXELS,
-            color: SNAKECOLOR,
-            velocity: VELOCITY
-          })
-        );
-        score++;
-        board.drawScoreboard();
-      }
-    }
-  };
 
   var Board = function() {
     this.columns = GAMEBOARDWIDTH;
@@ -65,9 +31,14 @@ window.onload = function() {
     this.snack = null;
   };
 
-  Board.prototype.addSnack = function() {
+  Board.prototype.addSnack = function(snake) {
     if (this.snack) this.snack = null;
-    this.snack = new Snack(rand(49)*PIXELS, rand(49)*PIXELS);
+    this.snack = new Snack({
+      boardCtx: boardCtx,
+      pixels: PIXELS,
+      snake: snake
+    });
+    this.snack.spawn(this.snake);
   }
 
   Board.prototype.draw = function() {
@@ -153,7 +124,7 @@ window.onload = function() {
       this.board = new Board();
       this.board.snake = this.snake;
       score = 0;
-      this.board.addSnack();
+      this.board.addSnack(this.snake);
       this.board.drawScoreboard();
       this.addListeners();
       this.draw();
@@ -172,7 +143,23 @@ window.onload = function() {
 
       this.snake.move();
 
-      this.board.snack.nom(this.snake, this.board);
+      if (this.board.snack.nom(this.snake)) {
+        this.board.addSnack();
+        this.snake.tail++;
+        this.snake.children.push(
+          new Snake({
+            x: 0,
+            y: 0,
+            boardCtx: boardCtx,
+            pixels: PIXELS,
+            color: SNAKECOLOR,
+            velocity: VELOCITY
+          })
+        );
+        score++;
+        this.board.drawScoreboard();
+      }
+
       this.snake.collides(this.board);
 
       requestAnimationFrame(this.draw);

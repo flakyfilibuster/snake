@@ -14,41 +14,37 @@ var Snake = class {
     return this.path[this.path.length -7 -index * 6];
   }
 
-  draw() {
+  draw(board) {
     this.path.push({x: this.x, y: this.y});
 
-    this.boardCtx.beginPath();
-    this.boardCtx.rect(this.x, this.y, this.pixels, this.pixels);
-    this.boardCtx.fillStyle = this.color ;
-    this.boardCtx.fill();
-    this.boardCtx.closePath();
+    board.drawSnake(this);
 
     this.children.forEach(function(child, i) {
-      this.boardCtx.fillStyle = this.color ;
       var pos = this.childPosition(i);
       child.x = pos.x;
       child.y = pos.y
-      this.boardCtx.beginPath();
-      this.boardCtx.rect(pos.x, pos.y, this.pixels, this.pixels);
-      this.boardCtx.fill();
-      this.boardCtx.closePath();
+      board.drawSnake(child)
     }, this);
   }
 
   collides(board) {
+    var collides = false;
+
     // board boundaries
     if (this.x < 0 || this.x > board.columns - this.pixels || this.y < 0 || this.y > board.rows - this.pixels) {
-      board.gameOver();
+      collides = true;
     }
 
     // own tail
     this.children.forEach(function(child, idx) {
       if (idx > 1) {
         if (this.x > child.x && this.x < (child.x + this.pixels) && this.y > child.y && this.y < (child.y + this.pixels)) {
-          board.gameOver();
+          collides = true;
         }
       }
     }, this);
+
+    return collides;
   }
 
   move() {

@@ -55,7 +55,7 @@ var Board = (function() {
 
     triggerExplosion(snack) {
       this.counter = 0;
-      this.snack = snack
+      this.snack = snack;
     }
 
     drawSnackExplosion() {
@@ -66,7 +66,7 @@ var Board = (function() {
         y: this.snack.y - this.counter/2,
         width: 10+this.counter,
         height: 10+this.counter
-      })
+      });
     }
 
     drawGrid() {
@@ -78,14 +78,14 @@ var Board = (function() {
           canvas: this.boardCtx,
           start: {x: i, y: 0},
           end: {x: i, y: this.rows}
-        })
+        });
 
         // rows
         drawLine({
           canvas: this.boardCtx,
           start: {x: 0, y: i},
           end: {x: this.columns, y: i}
-        })
+        });
       }
     }
 

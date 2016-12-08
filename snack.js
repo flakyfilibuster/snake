@@ -2,14 +2,12 @@ class Snack {
   constructor(cfg) {
     assignConfig(cfg, this);
     this.color = '#ffffff';
+    this.pixels = 10;
+    this.spawn(this.snake);
   }
 
-  draw() {
-    this.boardCtx.beginPath();
-    this.boardCtx.rect(this.x, this.y, this.pixels, this.pixels);
-    this.boardCtx.fillStyle = this.color ;
-    this.boardCtx.fill();
-    this.boardCtx.closePath();
+  draw(board) {
+    board.drawSnack(this);
   }
 
   isColliding(snake) {
@@ -31,7 +29,10 @@ class Snack {
     }
   }
 
-  nom(snake) {
-    if (snake.x == this.x && snake.y == this.y) return true;
+  nom(snake, board) {
+    if (snake.x == this.x && snake.y == this.y) {
+      board.triggerExplosion(this);
+      return true;
+    }
   }
 }

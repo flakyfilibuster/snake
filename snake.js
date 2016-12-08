@@ -6,7 +6,7 @@ var Snake = class {
     this.dy = 0;
     this.path = [];
     this.tail = 0;
-    this.children = []
+    this.children = [];
     this.direction = null;
     this.velocity = 2;
     this.pixels = 10;
@@ -22,7 +22,7 @@ var Snake = class {
     // immediate child offset
     // otherwise it would be drawn on top of head
     // 7 is the position that is 12pixels offset
-    var posOffset = this.path.length -7
+    var posOffset = this.path.length -7;
     var childOffset = index * 6;
     var childPosition = posOffset - childOffset;
 
@@ -35,8 +35,8 @@ var Snake = class {
     this.children.forEach(function(child, i) {
       var pos = this.childPosition(i);
       child.x = pos.x;
-      child.y = pos.y
-      board.drawSnake(child)
+      child.y = pos.y;
+      board.drawSnake(child);
     }, this);
   }
 
@@ -71,7 +71,7 @@ var Snake = class {
   }
 
   processDirection(cb) {
-    if (this.x%this.pixels == 0 && this.y%this.pixels == 0) {
+    if (this.x%this.pixels === 0 && this.y%this.pixels === 0) {
       this.direction = null;
       cb();
     }
@@ -84,7 +84,7 @@ var Snake = class {
         this.dy = -this.velocity;
       }
     }.bind(this));
-  };
+  }
 
   right() {
     this.processDirection(function() {
@@ -93,7 +93,7 @@ var Snake = class {
         this.dy = 0;
       }
     }.bind(this));
-  };
+  }
 
   down() {
     this.processDirection(function() {
@@ -102,7 +102,7 @@ var Snake = class {
         this.dy = this.velocity;
       }
     }.bind(this));
-  };
+  }
 
   left() {
     this.processDirection(function() {
@@ -111,5 +111,5 @@ var Snake = class {
         this.dy = 0;
       }
     }.bind(this));
-  };
+  }
 };

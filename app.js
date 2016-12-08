@@ -4,7 +4,7 @@ window.onload = function() {
     this.setUp = function() {
       this.board = new Board({snack: null});
       this.snake = new Snake({x: 250, y: 250});
-      this.snack = new Snack({snake: this.snake})
+      this.snack = new Snack({snake: this.snake});
 
       this.started = false;
       this.ended = false;
@@ -13,21 +13,21 @@ window.onload = function() {
       this.board.drawScoreboard(this);
       this.addListeners();
       this.draw();
-    }
+    };
 
     this.gameOver = function() {
       this.ended = true;
       this.board.drawScoreboard(this);
       this.addRestartListener();
       return;
-    }
+    };
 
     this.snackEaten = function() {
-      this.score++
+      this.score++;
       this.snack = new Snack({snake: this.snake});
       this.snake.nom();
       this.board.drawScoreboard(this);
-    }
+    };
 
     this.draw = function() {
       if (this.snake.collides(this.board)) {
@@ -82,12 +82,12 @@ window.onload = function() {
         } else if (e.keyCode == 39) {
           this.snake.direction = 'right';
         }
-      }.bind(this)
+      }.bind(this);
 
       document.addEventListener("keydown", keyDownHandler, false);
     }.bind(this);
-  }
+  };
 
   var game = new Game();
   game.setUp();
-}
+};

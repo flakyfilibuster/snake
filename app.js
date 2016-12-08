@@ -1,49 +1,37 @@
-// TODO:
-// * prevent snack from spawning in snake tail
-
 window.onload = function() {
-
-  var VELOCITY = 2;
-  var PIXELS = 10;
-  var BOARDBGCOLOR = '#313b3d';
-  var GRIDCOLOR = '#ffffff';
-  var SNAKECOLOR = '#33b2ce';
-  var gameOver = false;
-  var started = false;
 
   var Game = function() {
     this.setUp = function() {
-      this.snake = new Snake({
-        x: 250,
-        y: 250,
-        pixels: PIXELS,
-        color: SNAKECOLOR,
-        velocity: VELOCITY
-      });
+      this.board = new Board({snack: null});
+      this.snake = new Snake({x: 250, y: 250});
+      this.snack = new Snack({snake: this.snake})
 
-      this.board = new Board({
-        GRIDCOLOR: GRIDCOLOR,
-        PIXELS: PIXELS,
-        BOARDBGCOLOR: BOARDBGCOLOR,
-        pixels: PIXELS,
-        gameOver: gameOver,
-        started: started,
-        snack: null
-      });
+      this.started = false;
+      this.ended = false;
+      this.score = 0;
 
-      this.board.snake = this.snake;
-      this.board.addSnack(this.snake);
-      this.board.drawScoreboard();
+      this.board.drawScoreboard(this);
       this.addListeners();
       this.draw();
     }
 
+    this.gameOver = function() {
+      this.ended = true;
+      this.board.drawScoreboard(this);
+      this.addRestartListener();
+      return;
+    }
+
+    this.snackEaten = function() {
+      this.score++
+      this.snack = new Snack({snake: this.snake});
+      this.snake.nom();
+      this.board.drawScoreboard(this);
+    }
+
     this.draw = function() {
       if (this.snake.collides(this.board)) {
-        this.board.drawScoreboard(true);
-        this.board
-        this.addRestartListener();
-        return;
+        return this.gameOver();
       }
 
       if (this.snake.direction) {
@@ -51,25 +39,15 @@ window.onload = function() {
       }
 
       this.board.draw();
-      this.board.snack.draw();
+
+      this.snack.draw(this.board);
+
       this.snake.draw(this.board);
 
       this.snake.move();
 
-      if (this.board.snack.nom(this.snake)) {
-        this.board.addSnack();
-        this.snake.tail++;
-        this.snake.children.push(
-          new Snake({
-            x: 0,
-            y: 0,
-            pixels: PIXELS,
-            color: SNAKECOLOR,
-            velocity: VELOCITY
-          })
-        );
-        this.board.increaseScore();
-        this.board.drawScoreboard();
+      if (this.snack.nom(this.snake, this.board)) {
+        this.snackEaten();
       }
 
       this.snake.collides(this.board, this);
@@ -90,9 +68,9 @@ window.onload = function() {
 
     this.addListeners = function() {
       var keyDownHandler = function(e) {
-        if (!this.board.started && (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40 )) {
-          this.board.started = true;
-          this.board.drawScoreboard();
+        if (!this.started && (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40 )) {
+          this.started = true;
+          this.board.drawScoreboard(this);
         }
 
         if (e.keyCode == 38) {
@@ -109,7 +87,6 @@ window.onload = function() {
       document.addEventListener("keydown", keyDownHandler, false);
     }.bind(this);
   }
-
 
   var game = new Game();
   game.setUp();

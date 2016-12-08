@@ -8,15 +8,28 @@ var Snake = class {
     this.tail = 0;
     this.children = []
     this.direction = null;
+    this.velocity = 2;
+    this.pixels = 10;
+    this.color = '#33b2ce';
+  }
+
+  nom() {
+    this.tail++;
+    this.children.push(new Snake({x: 0, y: 0}));
   }
 
   childPosition(index) {
-    return this.path[this.path.length -7 -index * 6];
+    // immediate child offset
+    // otherwise it would be drawn on top of head
+    // 7 is the position that is 12pixels offset
+    var posOffset = this.path.length -7
+    var childOffset = index * 6;
+    var childPosition = posOffset - childOffset;
+
+    return this.path[childPosition];
   }
 
   draw(board) {
-    this.path.push({x: this.x, y: this.y});
-
     board.drawSnake(this);
 
     this.children.forEach(function(child, i) {
@@ -37,6 +50,8 @@ var Snake = class {
 
     // own tail
     this.children.forEach(function(child, idx) {
+
+      // needed - otherwise it collides as soon as you take a turn
       if (idx > 1) {
         if (this.x > child.x && this.x < (child.x + this.pixels) && this.y > child.y && this.y < (child.y + this.pixels)) {
           collides = true;
@@ -50,6 +65,9 @@ var Snake = class {
   move() {
     this.x += this.dx;
     this.y += this.dy;
+
+    // remember path for tail
+    this.path.push({x: this.x, y: this.y});
   }
 
   processDirection(cb) {

@@ -45,6 +45,6 @@ function drawLine(cfg) {
   can.beginPath();
   can.moveTo(cfg.start.x, cfg.start.y);
   can.lineWidth = cfg.lineWidth || 0.1;
-  can.lineTo(cfg.end.x, cfg.end.y)
+  can.lineTo(cfg.end.x, cfg.end.y);
   can.stroke();
 }

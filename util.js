@@ -31,3 +31,20 @@ function assignConfig(cfg, ctx) {
   });
 }
 
+function drawRect(cfg) {
+  cfg.canvas.font = cfg.font;
+  cfg.canvas.beginPath();
+  cfg.canvas.rect((cfg.x || 0), (cfg.y || 0), cfg.width, cfg.height);
+  cfg.canvas.fillStyle = cfg.color ;
+  cfg.canvas.fill();
+  cfg.canvas.closePath();
+}
+
+function drawLine(cfg) {
+  var can = cfg.canvas;
+  can.beginPath();
+  can.moveTo(cfg.start.x, cfg.start.y);
+  can.lineWidth = cfg.lineWidth || 0.1;
+  can.lineTo(cfg.end.x, cfg.end.y)
+  can.stroke();
+}
